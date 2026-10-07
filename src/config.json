@@ -1,0 +1,289 @@
+{
+  "id": "study-academy",
+  "slug": "study",
+  "name": "차곡차곡 공부방",
+  "englishName": "Study Room",
+  "category": "study",
+  "tagline": "오늘의 한 페이지가, 내일의 실력이 되도록.",
+  "description": "과제 제출 · 검토 피드백 · 상담 · 수납 기록을 연결하는 공부방",
+  "accent": "#245cc5",
+  "tint": "#eef3fd",
+  "eyebrow": "SMALL STEPS, STEADY PROGRESS",
+  "primary": "Task",
+  "metrics": [
+    {
+      "entity": "Student",
+      "label": "함께 배우는 학생"
+    },
+    {
+      "entity": "Task",
+      "label": "진행 중 과제",
+      "status": "assigned"
+    },
+    {
+      "entity": "Task",
+      "label": "검토 대기",
+      "status": "submitted"
+    },
+    {
+      "entity": "Tuition",
+      "label": "미수납 청구",
+      "status": "unpaid"
+    }
+  ],
+  "entities": {
+    "Student": {
+      "label": "원생",
+      "description": "원생과 보호자의 연락처를 한곳에서 관리해요.",
+      "icon": "○",
+      "layout": "table",
+      "fields": [
+        {
+          "name": "name",
+          "label": "이름",
+          "type": "text",
+          "required": true
+        },
+        {
+          "name": "phone",
+          "label": "연락처",
+          "type": "text",
+          "required": false
+        },
+        {
+          "name": "guardianName",
+          "label": "보호자",
+          "type": "text",
+          "required": false
+        },
+        {
+          "name": "guardianPhone",
+          "label": "보호자 연락처",
+          "type": "text",
+          "required": false
+        }
+      ],
+      "editFields": [
+        "name",
+        "phone",
+        "guardianName",
+        "guardianPhone"
+      ]
+    },
+    "Task": {
+      "label": "학습 보드",
+      "description": "과제 부여부터 제출, 검토까지 학습 과정을 이어가요.",
+      "icon": "▤",
+      "layout": "board",
+      "fields": [
+        {
+          "name": "studentId",
+          "label": "학생",
+          "type": "text",
+          "required": true,
+          "relation": "Student"
+        },
+        {
+          "name": "title",
+          "label": "과제",
+          "type": "text",
+          "required": true
+        },
+        {
+          "name": "subject",
+          "label": "과목",
+          "type": "text",
+          "required": true
+        },
+        {
+          "name": "dueDate",
+          "label": "마감일",
+          "type": "date",
+          "required": true
+        },
+        {
+          "name": "feedback",
+          "label": "피드백",
+          "type": "textarea",
+          "required": false
+        },
+        {
+          "name": "status",
+          "label": "상태",
+          "type": "select",
+          "readOnly": true,
+          "options": [
+            {
+              "value": "assigned",
+              "label": "진행 중"
+            },
+            {
+              "value": "submitted",
+              "label": "검토 대기"
+            },
+            {
+              "value": "reviewed",
+              "label": "검토 완료"
+            }
+          ]
+        }
+      ],
+      "initialStatus": "assigned",
+      "editFields": [
+        "title",
+        "subject",
+        "dueDate",
+        "feedback"
+      ],
+      "actions": [
+        {
+          "id": "submit",
+          "label": "제출 확인",
+          "from": [
+            "assigned"
+          ],
+          "to": "submitted"
+        },
+        {
+          "id": "review",
+          "label": "검토 완료",
+          "from": [
+            "submitted"
+          ],
+          "to": "reviewed"
+        }
+      ]
+    },
+    "Tuition": {
+      "label": "수납 장부",
+      "description": "현장·계좌 수납을 수동 기록해요. 청구서 발송이나 실제 결제는 하지 않아요.",
+      "icon": "₩",
+      "layout": "table",
+      "fields": [
+        {
+          "name": "studentId",
+          "label": "학생",
+          "type": "text",
+          "required": true,
+          "relation": "Student"
+        },
+        {
+          "name": "title",
+          "label": "청구 항목",
+          "type": "text",
+          "required": true
+        },
+        {
+          "name": "amount",
+          "label": "금액 (원)",
+          "type": "number",
+          "required": true,
+          "min": 0,
+          "max": 10000000
+        },
+        {
+          "name": "dueDate",
+          "label": "납부 기한",
+          "type": "date",
+          "required": true
+        },
+        {
+          "name": "paidDate",
+          "label": "수납일",
+          "type": "date",
+          "required": false,
+          "readOnly": true
+        },
+        {
+          "name": "status",
+          "label": "상태",
+          "type": "select",
+          "readOnly": true,
+          "options": [
+            {
+              "value": "unpaid",
+              "label": "미수납"
+            },
+            {
+              "value": "paid",
+              "label": "수납 완료"
+            }
+          ]
+        }
+      ],
+      "initialStatus": "unpaid",
+      "actions": [
+        {
+          "id": "pay",
+          "label": "수납 확인",
+          "from": [
+            "unpaid"
+          ],
+          "to": "paid"
+        }
+      ]
+    },
+    "Consultation": {
+      "label": "상담 노트",
+      "description": "다음 상담에 이어갈 중요한 이야기를 남겨요.",
+      "icon": "↔",
+      "layout": "cards",
+      "fields": [
+        {
+          "name": "studentId",
+          "label": "원생",
+          "type": "text",
+          "required": true,
+          "relation": "Student"
+        },
+        {
+          "name": "date",
+          "label": "상담일",
+          "type": "date",
+          "required": true
+        },
+        {
+          "name": "memo",
+          "label": "상담 내용",
+          "type": "textarea",
+          "required": true
+        }
+      ],
+      "editFields": [
+        "date",
+        "memo"
+      ]
+    },
+    "Notice": {
+      "label": "공지",
+      "description": "학부모에게 전달할 내용을 정리해요. 실제 알림은 발송되지 않아요.",
+      "icon": "↗",
+      "layout": "cards",
+      "fields": [
+        {
+          "name": "title",
+          "label": "제목",
+          "type": "text",
+          "required": true
+        },
+        {
+          "name": "date",
+          "label": "게시일",
+          "type": "date",
+          "required": true
+        },
+        {
+          "name": "content",
+          "label": "내용",
+          "type": "textarea",
+          "required": true
+        }
+      ],
+      "editFields": [
+        "title",
+        "date",
+        "content"
+      ]
+    }
+  }
+}

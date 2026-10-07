@@ -1,0 +1,27 @@
+{
+  "features": [
+    "Student",
+    "Task",
+    "Tuition",
+    "Consultation",
+    "Notice"
+  ],
+  "entities": [
+    "Student",
+    "Task",
+    "Tuition",
+    "Consultation",
+    "Notice"
+  ],
+  "roles": [
+    "owner",
+    "staff"
+  ],
+  "workflows": [
+    "원생",
+    "학습 보드",
+    "수납 장부",
+    "상담 노트",
+    "공지"
+  ]
+}
